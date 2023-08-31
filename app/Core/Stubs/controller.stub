@@ -1,0 +1,50 @@
+<?php
+
+namespace {{ namespace }};
+
+use Core\Parents\BaseController;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+
+class {{ class }} extends BaseController
+{
+//    /**
+//     * Display a listing of the resource.
+//     */
+//    public function get(Request $request): JsonResponse
+//    {
+//        //
+//    }
+
+//    /**
+//     * Display the specified resource.
+//     */
+//    public function find(Request $request): JsonResponse
+//    {
+//        //
+//    }
+
+//    /**
+//     * Store a newly created resource in storage.
+//     */
+//    public function create(Request $request): JsonResponse
+//    {
+//        //
+//    }
+
+//    /**
+//     * Update the specified resource in storage.
+//     */
+//    public function update(Request $request): JsonResponse
+//    {
+//        //
+//    }
+
+//    /**
+//     * Remove the specified resource from storage.
+//     */
+//    public function delete(Request $request): JsonResponse
+//    {
+//        //
+//    }
+}
