@@ -5,7 +5,8 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": "^8.2",
+        "php": "^8.1",
+        "irazasyed/telegram-bot-sdk": "^3.13",
         "laravel/lumen-framework": "^10.0"
     },
     "require-dev": {
@@ -15,8 +16,14 @@
     },
     "autoload": {
         "psr-4": {
-            "Core\\": "app/Core/",
-            "Sections\\": "app/Sections/"
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
         }
     },
     "scripts": {

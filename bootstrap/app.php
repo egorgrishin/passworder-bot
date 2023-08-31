@@ -1,22 +1,8 @@
 <?php
 
-use Core\Classes\Illuminate\Application;
-use Core\Exceptions\Handler;
-use Core\Kernels\Kernel;
-use Core\Middleware\FieldsAsArray;
-use Core\Providers\AppServiceProvider;
-use Core\Providers\AuthServiceProvider;
-use Core\Providers\DatabaseServiceProvider;
-use Core\Providers\EventServiceProvider;
-use Core\Providers\RequestServiceProvider;
-use Core\Providers\RouteServiceProvider;
-use Illuminate\Contracts\Console\Kernel as LumenKernel;
-use Illuminate\Contracts\Debug\ExceptionHandler;
-use Laravel\Lumen\Bootstrap\LoadEnvironmentVariables;
+require_once __DIR__.'/../vendor/autoload.php';
 
-require_once __DIR__ . '/../vendor/autoload.php';
-
-(new LoadEnvironmentVariables(
+(new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
     dirname(__DIR__)
 ))->bootstrap();
 
@@ -33,10 +19,13 @@ date_default_timezone_set(env('APP_TIMEZONE', 'UTC'));
 |
 */
 
-$app = new Application(dirname(__DIR__));
+$app = new Laravel\Lumen\Application(
+    dirname(__DIR__)
+);
 
-$app->withFacades();
-$app->withEloquent();
+// $app->withFacades();
+
+// $app->withEloquent();
 
 /*
 |--------------------------------------------------------------------------
@@ -45,12 +34,19 @@ $app->withEloquent();
 |
 | Now we will register a few bindings in the service container. We will
 | register the exception handler and the console kernel. You may add
-| your own bindings here if you like, or you can make another file.
+| your own bindings here if you like or you can make another file.
 |
 */
 
-$app->singleton(ExceptionHandler::class, Handler::class);
-$app->singleton(LumenKernel::class, Kernel::class);
+$app->singleton(
+    Illuminate\Contracts\Debug\ExceptionHandler::class,
+    App\Exceptions\Handler::class
+);
+
+$app->singleton(
+    Illuminate\Contracts\Console\Kernel::class,
+    App\Console\Kernel::class
+);
 
 /*
 |--------------------------------------------------------------------------
@@ -76,26 +72,44 @@ $app->configure('app');
 |
 */
 
-$app->middleware([
-    FieldsAsArray::class,
-]);
+// $app->middleware([
+//     App\Http\Middleware\ExampleMiddleware::class
+// ]);
+
+// $app->routeMiddleware([
+//     'auth' => App\Http\Middleware\Authenticate::class,
+// ]);
 
 /*
 |--------------------------------------------------------------------------
 | Register Service Providers
 |--------------------------------------------------------------------------
 |
-| Here we will register all the application's service providers which
+| Here we will register all of the application's service providers which
 | are used to bind services into the container. Service providers are
 | totally optional, so you are not required to uncomment this line.
 |
 */
 
-$app->register(AppServiceProvider::class);
-$app->register(AuthServiceProvider::class);
-$app->register(DatabaseServiceProvider::class);
-$app->register(RequestServiceProvider::class);
-$app->register(RouteServiceProvider::class);
-$app->register(EventServiceProvider::class);
+// $app->register(App\Providers\AppServiceProvider::class);
+// $app->register(App\Providers\AuthServiceProvider::class);
+// $app->register(App\Providers\EventServiceProvider::class);
+
+/*
+|--------------------------------------------------------------------------
+| Load The Application Routes
+|--------------------------------------------------------------------------
+|
+| Next we will include the routes file so that they can all be added to
+| the application. This will provide all of the URLs the application
+| can respond to, as well as the controllers that may handle them.
+|
+*/
+
+$app->router->group([
+    'namespace' => 'App\Http\Controllers',
+], function ($router) {
+    require __DIR__.'/../routes/web.php';
+});
 
 return $app;
