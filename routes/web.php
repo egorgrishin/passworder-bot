@@ -14,5 +14,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    $response = \Telegram\Bot\Laravel\Facades\Telegram::bot()->sendMessage([
+        'chat_id' => '935824965',
+        'text' => 'Hello World'
+    ]);
+
+    $messageId = $response->getMessageId();
+    dd($messageId, $response);
     return view('welcome');
 });
