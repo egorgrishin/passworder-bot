@@ -27,7 +27,7 @@ class Commands
         }
 
         /** @var CommandInterface $command */
-        $command = new self::COMMANDS[$key];
+        $command = new (self::COMMANDS[$key]);
         return $command->run($request);
     }
 }
