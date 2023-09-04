@@ -2,12 +2,12 @@
 
 namespace App;
 
-use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Http;
 
 class Start
 {
-    public function start(): Response
+    public function start(): JsonResponse
     {
         $url = 'https://api.telegram.org/';
         $bot = 'bot6521726004:AAHh86wPhEu2tg_DJethX90BxmOq4BUw5ks/';
@@ -16,6 +16,6 @@ class Start
             'text' => 'Hi!',
         ]);
 
-        return response();
+        return response()->json();
     }
 }
