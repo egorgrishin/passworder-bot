@@ -30,7 +30,11 @@ Route::post('/bot', function (\Illuminate\Http\Request $request) {
     $response = \Telegram\Bot\Laravel\Facades\Telegram::bot()->sendMessage([
         'chat_id' => '935824965',
         'text' => 'Hello World',
-        'reply_markup' => $reply_markup
+        'reply_markup' => [
+            'keyboard' => $keyboard,
+            'resize_keyboard' => true,
+            'one_time_keyboard' => true
+        ]
     ]);
 
     $messageId = $response->getMessageId();
