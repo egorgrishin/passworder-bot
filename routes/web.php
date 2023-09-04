@@ -1,6 +1,10 @@
 <?php
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
+use Telegram\Bot\Laravel\Facades\Telegram;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/bot', function (\Illuminate\Http\Request $request) {
+Route::post('/bot', function (Request $request) {
     $keyboard = [
         ['7', '8', '9'],
         ['4', '5', '6'],
@@ -21,22 +25,13 @@ Route::post('/bot', function (\Illuminate\Http\Request $request) {
         ['0']
     ];
 
-    $response = \Telegram\Bot\Laravel\Facades\Telegram::bot()->sendMessage([
+    $url = 'https://api.telegram.org';
+    $bot = 'bot6521726004:AAHh86wPhEu2tg_DJethX90BxmOq4BUw5ks';
+    $response = Http::post($url . $bot . '/sendMessage', [
         'chat_id' => '935824965',
-        'text' => 'Hello World',
-        'reply_markup' => [
-            'keyboard' => $keyboard,
-            'resize_keyboard' => true,
-            'one_time_keyboard' => true
-        ]
+        'text' => $request->input('message.text'),
     ]);
-
-    $messageId = $response->getMessageId();
-
-    \Illuminate\Support\Facades\Log::debug($request->all());
-
     return response()->json([
-        'all' => $request->all(),
-        'messageId' => $messageId,
+        //
     ]);
 })->where('any', '.*');
