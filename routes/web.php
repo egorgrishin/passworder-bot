@@ -21,12 +21,6 @@ Route::post('/bot', function (\Illuminate\Http\Request $request) {
         ['0']
     ];
 
-    $reply_markup = \Telegram\Bot\Laravel\Facades\Telegram::replyKeyboardMarkup([
-        'keyboard' => $keyboard,
-        'resize_keyboard' => true,
-        'one_time_keyboard' => true
-    ]);
-
     $response = \Telegram\Bot\Laravel\Facades\Telegram::bot()->sendMessage([
         'chat_id' => '935824965',
         'text' => 'Hello World',
