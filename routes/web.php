@@ -13,20 +13,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/333', function () {
+Route::any('/{any}', function (\Illuminate\Http\Request $request) {
     $response = \Telegram\Bot\Laravel\Facades\Telegram::bot()->sendMessage([
         'chat_id' => '935824965',
         'text' => 'Hello World'
     ]);
 
     $messageId = $response->getMessageId();
-    dd($messageId, $response);
-    return view('welcome');
-});
-
-Route::any('/{any}', function (\Illuminate\Http\Request $request) {
-    \Illuminate\Support\Facades\Log::debug([
-        $request->method(),
-        $request->all()
+    return response()->json([
+        'all' => $request->all(),
+        'messageId' => $messageId,
     ]);
 })->where('any', '.*');
