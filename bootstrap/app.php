@@ -2,6 +2,7 @@
 
 use App\Commands\Kernel;
 use App\Exceptions\Handler;
+use App\Middleware\Commands;
 use App\Providers\AppServiceProvider;
 use Illuminate\Contracts\Console\Kernel as LumenKernel;
 use Illuminate\Contracts\Debug\ExceptionHandler;
@@ -70,9 +71,9 @@ $app->configure('app');
 |
 */
 
-//$app->middleware([
-//    //
-//]);
+$app->middleware([
+    Commands::class
+]);
 
 /*
 |--------------------------------------------------------------------------
