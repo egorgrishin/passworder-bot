@@ -2,8 +2,8 @@
 
 namespace App;
 
-use Illuminate\Http\Client\Factory;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Http;
 
 class Start
 {
@@ -11,7 +11,7 @@ class Start
     {
         $url = 'https://api.telegram.org/';
         $bot = 'bot6521726004:AAHh86wPhEu2tg_DJethX90BxmOq4BUw5ks/';
-        (new Factory())->post($url . $bot . 'sendMessage', [
+        Http::post($url . $bot . 'sendMessage', [
             'chat_id' => '935824965',
             'text' => 'Hi!',
         ]);
