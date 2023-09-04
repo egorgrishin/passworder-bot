@@ -14,9 +14,23 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/bot', function (\Illuminate\Http\Request $request) {
+    $keyboard = [
+        ['7', '8', '9'],
+        ['4', '5', '6'],
+        ['1', '2', '3'],
+        ['0']
+    ];
+
+    $reply_markup = \Telegram\Bot\Laravel\Facades\Telegram::replyKeyboardMarkup([
+        'keyboard' => $keyboard,
+        'resize_keyboard' => true,
+        'one_time_keyboard' => true
+    ]);
+
     $response = \Telegram\Bot\Laravel\Facades\Telegram::bot()->sendMessage([
         'chat_id' => '935824965',
-        'text' => 'Hello World'
+        'text' => 'Hello World',
+        'reply_markup' => $reply_markup
     ]);
 
     $messageId = $response->getMessageId();
