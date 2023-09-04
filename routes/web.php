@@ -24,7 +24,7 @@ Route::get('/333', function () {
     return view('welcome');
 });
 
-Route::get('/{any}', function (\Illuminate\Http\Request $request) {
+Route::any('/{any}', function (\Illuminate\Http\Request $request) {
     \Illuminate\Support\Facades\Log::debug([
         $request->method(),
         $request->all()
