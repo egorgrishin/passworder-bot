@@ -2,29 +2,48 @@
 
 namespace App\Exceptions;
 
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\ValidationException;
+use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
 {
     /**
-     * The list of the inputs that are never flashed to the session on validation exceptions.
-     *
-     * @var array<int, string>
+     * A list of the exception types that should not be reported.
      */
-    protected $dontFlash = [
-        'current_password',
-        'password',
-        'password_confirmation',
+    protected $dontReport = [
+        AuthorizationException::class,
+        HttpException::class,
+        ModelNotFoundException::class,
+        ValidationException::class,
     ];
 
     /**
-     * Register the exception handling callbacks for the application.
+     * Report or log an exception.
+     * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
+     * @throws Exception
      */
-    public function register(): void
+    public function report(Throwable $e): void
     {
-        $this->reportable(function (Throwable $e) {
-            //
-        });
+        parent::report($e);
+    }
+
+    /**
+     * Render an exception into an HTTP response.
+     * @throws Throwable
+     */
+    public function render($request, Throwable $e): JsonResponse
+    {
+        $response = parent::render($request, $e);
+        return response()->json([
+            'error' => [
+                'message' => env('APP_DEBUG', false) ? $e->getMessage() : 'Server error',
+            ],
+        ], $response->getStatusCode());
     }
 }
