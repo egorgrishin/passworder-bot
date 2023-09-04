@@ -25,9 +25,9 @@ Route::post('/bot', function (Request $request) {
         ['0']
     ];
 
-    $url = 'https://api.telegram.org';
-    $bot = 'bot6521726004:AAHh86wPhEu2tg_DJethX90BxmOq4BUw5ks';
-    $response = Http::post($url . $bot . '/sendMessage', [
+    $url = 'https://api.telegram.org/';
+    $bot = 'bot6521726004:AAHh86wPhEu2tg_DJethX90BxmOq4BUw5ks/';
+    $response = Http::post($url . $bot . 'sendMessage', [
         'chat_id' => '935824965',
         'text' => $request->input('message.text'),
     ]);
