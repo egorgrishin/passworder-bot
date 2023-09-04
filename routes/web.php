@@ -20,6 +20,9 @@ Route::post('/bot', function (\Illuminate\Http\Request $request) {
     ]);
 
     $messageId = $response->getMessageId();
+
+    \Illuminate\Support\Facades\Log::debug($request->all());
+
     return response()->json([
         'all' => $request->all(),
         'messageId' => $messageId,
