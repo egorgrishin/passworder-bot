@@ -7,6 +7,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Throwable;
 
@@ -19,6 +20,7 @@ class ChatAddedToDatabase
     public function handle(Request $request, Closure $next): mixed
     {
         $chat_id = $request->input('message.chat.id');
+        Log::debug($chat_id);
         if ($this->chatAddedToDatabase($chat_id)) {
             return $next($request);
         }
