@@ -6,8 +6,6 @@ use App\Exceptions\AddingChatError;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Throwable;
 
@@ -20,8 +18,6 @@ class ChatAddedToDatabase
     public function handle(Request $request, Closure $next): mixed
     {
         $chat_id = $request->input('message.chat.id');
-        Log::debug($chat_id);
-        Log::debug(Hash::make($chat_id));
         if ($this->chatAddedToDatabase($chat_id)) {
             return $next($request);
         }
@@ -42,7 +38,7 @@ class ChatAddedToDatabase
     private function chatAddedToDatabase(int $chat_id): bool
     {
         return DB::table('chats')
-            ->where('hashed_chat_id', Hash::make($chat_id))
+            ->where('hashed_chat_id', hash('xxh128', $chat_id))
             ->exists();
     }
 
@@ -50,7 +46,7 @@ class ChatAddedToDatabase
     {
         return DB::table('chats')->insert([
             'uuid'           => $this->getUuid(),
-            'hashed_chat_id' => Hash::make($chat_id),
+            'hashed_chat_id' => hash('xxh128', $chat_id),
         ]);
     }
 
