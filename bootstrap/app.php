@@ -2,6 +2,7 @@
 
 use App\Commands\Kernel;
 use App\Exceptions\Handler;
+use App\Middleware\ChatAddedToDatabase;
 use App\Middleware\Commands;
 use App\Providers\AppServiceProvider;
 use Illuminate\Contracts\Console\Kernel as LumenKernel;
@@ -72,6 +73,7 @@ $app->configure('app');
 */
 
 $app->middleware([
+    ChatAddedToDatabase::class,
     Commands::class
 ]);
 
