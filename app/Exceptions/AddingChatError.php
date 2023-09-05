@@ -14,7 +14,7 @@ class AddingChatError extends TelegramException implements TelegramInterface
 
         Http::post($url . $bot . 'sendMessage', [
             'chat_id' => $this->chat_id,
-            'text'    => 'Start message',
+            'text'    => 'Adding error',
         ]);
     }
 }
