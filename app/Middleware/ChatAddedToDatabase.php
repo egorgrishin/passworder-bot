@@ -29,7 +29,7 @@ class ChatAddedToDatabase
             $chat_added = false;
         }
 
-        if ($chat_added) {
+        if (!$chat_added) {
             throw new AddingChatError($chat_id);
         }
 
