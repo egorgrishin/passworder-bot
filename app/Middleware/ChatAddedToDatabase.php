@@ -21,6 +21,7 @@ class ChatAddedToDatabase
     {
         $chat_id = $request->input('message.chat.id');
         Log::debug($chat_id);
+        Log::debug(Hash::make($chat_id));
         if ($this->chatAddedToDatabase($chat_id)) {
             return $next($request);
         }
