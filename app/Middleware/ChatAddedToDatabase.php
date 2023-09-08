@@ -12,44 +12,55 @@ use Throwable;
 class ChatAddedToDatabase
 {
     /**
-     * Handle an incoming request.
+     * Проверяет существование чата в базе данных
      * @throws AddingChatError
      */
     public function handle(Request $request, Closure $next): mixed
     {
-        $chat_id = $request->input('message.chat.id');
-        if ($this->chatAddedToDatabase($chat_id)) {
+        $hash = $request->input('hash');
+        if ($this->chatAddedToDatabase($hash)) {
             return $next($request);
         }
 
         try {
-            $chat_added = $this->addChatToDatabase($chat_id);
+            $chat_added = $this->addChatToDatabase($hash);
         } catch (Throwable) {
             $chat_added = false;
         }
 
         if (!$chat_added) {
-            throw new AddingChatError($chat_id);
+            throw new AddingChatError(
+                $request->input('message.chat.id')
+            );
         }
 
         return $next($request);
     }
 
-    private function chatAddedToDatabase(int $chat_id): bool
+    /**
+     * Проверяет наличие чата пользователя с ботом в базе данных
+     */
+    private function chatAddedToDatabase(string $hash): bool
     {
         return DB::table('chats')
-            ->where('hashed_chat_id', hash('xxh128', $chat_id))
+            ->where('hashed_chat_id', $hash)
             ->exists();
     }
 
-    private function addChatToDatabase(int $chat_id): bool
+    /**
+     * Добавляет чат пользователя с ботом в базу данных
+     */
+    private function addChatToDatabase(string $hash): bool
     {
         return DB::table('chats')->insert([
             'uuid'           => $this->getUuid(),
-            'hashed_chat_id' => hash('xxh128', $chat_id),
+            'hashed_chat_id' => $hash,
         ]);
     }
 
+    /**
+     * Возвращает свободный UUID
+     */
     private function getUuid(): string
     {
         do {
@@ -58,6 +69,9 @@ class ChatAddedToDatabase
         return $uuid;
     }
 
+    /**
+     * Проверяет UUID на доступность
+     */
     private function uuidIsBusy(string $uuid): bool
     {
         return DB::table('chats')
