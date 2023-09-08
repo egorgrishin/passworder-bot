@@ -1,18 +1,9 @@
 <?php
-
-use App\Commands\Kernel;
-use App\Exceptions\Handler;
-use App\Middleware\ChatAddedToDatabase;
-use App\Middleware\Commands;
-use App\Providers\AppServiceProvider;
-use Illuminate\Contracts\Console\Kernel as LumenKernel;
-use Illuminate\Contracts\Debug\ExceptionHandler;
-use Laravel\Lumen\Application;
-use Laravel\Lumen\Bootstrap\LoadEnvironmentVariables;
+/** @noinspection PhpFullyQualifiedNameUsageInspection */
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-(new LoadEnvironmentVariables(
+(new \Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
     dirname(__DIR__)
 ))->bootstrap();
 
@@ -29,7 +20,7 @@ date_default_timezone_set(env('APP_TIMEZONE', 'UTC'));
 |
 */
 
-$app = new Application(dirname(__DIR__));
+$app = new \Laravel\Lumen\Application(dirname(__DIR__));
 
 $app->withFacades();
 $app->withEloquent();
@@ -45,8 +36,14 @@ $app->withEloquent();
 |
 */
 
-$app->singleton(ExceptionHandler::class, Handler::class);
-$app->singleton(LumenKernel::class, Kernel::class);
+$app->singleton(
+    \Illuminate\Contracts\Debug\ExceptionHandler::class,
+    \App\Exceptions\Handler::class
+);
+$app->singleton(
+    \Illuminate\Contracts\Console\Kernel::class,
+    \App\Commands\Kernel::class
+);
 
 /*
 |--------------------------------------------------------------------------
@@ -73,8 +70,10 @@ $app->configure('app');
 */
 
 $app->middleware([
-    ChatAddedToDatabase::class,
-    Commands::class
+    \App\Middleware\HashChatId::class,
+    \App\Middleware\ChatAddedToDatabase::class,
+    \App\Middleware\PasswordDefined::class,
+    \App\Middleware\Commands::class
 ]);
 
 /*
@@ -88,6 +87,6 @@ $app->middleware([
 |
 */
 
-$app->register(AppServiceProvider::class);
+$app->register(\App\Providers\AppServiceProvider::class);
 
 return $app;
