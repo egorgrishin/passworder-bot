@@ -43,7 +43,7 @@ class ChatAddedToDatabase
     private function chatAddedToDatabase(string $hash): bool
     {
         return DB::table('chats')
-            ->where('hashed_chat_id', $hash)
+            ->where('hash', $hash)
             ->exists();
     }
 
@@ -53,8 +53,8 @@ class ChatAddedToDatabase
     private function addChatToDatabase(string $hash): bool
     {
         return DB::table('chats')->insert([
-            'uuid'           => $this->getUuid(),
-            'hashed_chat_id' => $hash,
+            'uuid' => $this->getUuid(),
+            'hash' => $hash,
         ]);
     }
 
