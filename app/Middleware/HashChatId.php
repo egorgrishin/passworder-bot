@@ -20,9 +20,6 @@ class HashChatId
             $request->offsetSet('hash', Hasher::make($chat_id));
         }
 
-        Log::debug($request->all());
-        throw new AddingChatError($chat_id);
-
         return $next($request);
     }
 }
