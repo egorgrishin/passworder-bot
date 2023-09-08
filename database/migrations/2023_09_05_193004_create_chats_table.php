@@ -13,7 +13,15 @@ return new class extends Migration
     {
         Schema::create('chats', function (Blueprint $table) {
             $table->uuid()->primary();
-            $table->string('hashed_chat_id', 60)->unique();
+            $table->string('hash', 60)->unique();
+            $table->string('password');
+            $table->tinyInteger('stage_id')->nullable()->unsigned()->index();
+
+            $table->foreign('stage_id')
+                ->references('id')
+                ->on('stages')
+                ->nullOnDelete()
+                ->cascadeOnUpdate();
         });
     }
 
