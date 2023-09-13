@@ -15,13 +15,7 @@ return new class extends Migration
             $table->uuid()->primary();
             $table->string('hash', 60)->unique();
             $table->string('password')->nullable();
-            $table->tinyInteger('stage_id')->nullable()->unsigned()->index();
-
-            $table->foreign('stage_id')
-                ->references('id')
-                ->on('stages')
-                ->nullOnDelete()
-                ->cascadeOnUpdate();
+            $table->string('stage', 63)->nullable();
         });
     }
 
