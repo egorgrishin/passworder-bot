@@ -13,6 +13,7 @@ class Start
 {
     public function start(Request $request)
     {
+        return response()->json();
         Log::debug($request->all());
         $chat = Chat::getInstance();
         switch ($chat->stage) {

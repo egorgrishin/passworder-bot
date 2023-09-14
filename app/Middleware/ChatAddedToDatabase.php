@@ -18,7 +18,6 @@ class ChatAddedToDatabase
      */
     public function handle(Request $request, Closure $next): mixed
     {
-        throw new AddingChatError($request->input('message.chat.id'));
         $hash = $request->input('hash');
         if (Chat::getInstance() !== null) {
             return $next($request);
