@@ -20,7 +20,7 @@ class SessionIsActive
             $hash = $request->input('hash')
         );
 
-        if ($this->sessionIsActive($chat->last_activity_at)) {
+        if ($chat->stage === 'set_password' || $this->sessionIsActive($chat->last_activity_at)) {
             return $next($request);
         }
 

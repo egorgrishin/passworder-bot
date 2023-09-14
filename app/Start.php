@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -37,6 +38,7 @@ class Start
             ->where('hash', $request->input('hash'))
             ->update([
                 'password' => Hash::make($password),
+                'last_activity_at' => Date::now()->toDateTimeString(),
             ]);
     }
 }
