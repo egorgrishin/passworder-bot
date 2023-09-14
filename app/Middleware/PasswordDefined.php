@@ -19,6 +19,10 @@ class PasswordDefined
             $hash = $request->input('hash')
         );
 
+        if ($chat->stage === 'set_password') {
+            return $next($request);
+        }
+
         if ($chat->password === null) {
             $chat_id = $request->input('message.chat.id');
             throw new PasswordNotDefined($chat_id, $hash);
