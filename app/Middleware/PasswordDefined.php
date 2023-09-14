@@ -7,6 +7,7 @@ use App\Helpers\Chat;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class PasswordDefined
 {
@@ -17,6 +18,7 @@ class PasswordDefined
     public function handle(Request $request, Closure $next): mixed
     {
         $chat = Chat::getInstance();
+        Log::debug($chat);
         if ($chat->stage === 'set_password') {
             return $next($request);
         }
