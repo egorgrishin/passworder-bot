@@ -23,18 +23,11 @@ class ChatAddedToDatabase
         }
 
         try {
-            $chat_added = $this->addChatToDatabase($hash);
+            $this->addChatToDatabase($hash);
+            return $next($request);
         } catch (Throwable) {
-            $chat_added = false;
+            throw new AddingChatError($request->input('message.chat.id'));
         }
-
-        if (!$chat_added) {
-            throw new AddingChatError(
-                $request->input('message.chat.id')
-            );
-        }
-
-        return $next($request);
     }
 
     /**
@@ -50,9 +43,9 @@ class ChatAddedToDatabase
     /**
      * Добавляет чат пользователя с ботом в базу данных
      */
-    private function addChatToDatabase(string $hash): bool
+    private function addChatToDatabase(string $hash): void
     {
-        return DB::table('chats')->insert([
+        DB::table('chats')->insert([
             'uuid' => $this->getUuid(),
             'hash' => $hash,
         ]);
