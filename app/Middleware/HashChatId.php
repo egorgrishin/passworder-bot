@@ -15,6 +15,7 @@ class HashChatId
      */
     public function handle(Request $request, Closure $next): mixed
     {
+        Log::debug($request->all());
         $chat_id = $request->input('message.chat.id');
         if (!empty($chat_id)) {
             $request->offsetSet('hash', Hasher::make($chat_id));
