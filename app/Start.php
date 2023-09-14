@@ -2,10 +2,9 @@
 
 namespace App;
 
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
 class Start
@@ -13,10 +12,12 @@ class Start
     public function start(Request $request)
     {
         Log::debug($request->all());
-//        $chat = $this->getChatByHash($request->input('hash'));
-//        switch ($chat->stage) {
-//            case
-//        }
+        $chat = $this->getChatByHash($request->input('hash'));
+        switch ($chat->stage) {
+            case 'set_password':
+                $this->setPasswordHandler($request);
+                return;
+        }
     }
 
     /**
@@ -27,5 +28,15 @@ class Start
         return DB::table('chats')
             ->where('hash', $hash)
             ->first();
+    }
+
+    private function setPasswordHandler(Request $request): void
+    {
+        $password = $request->input('message.text');
+        DB::table('chats')
+            ->where('hash', $request->input('hash'))
+            ->update([
+                'password' => Hash::make($password),
+            ]);
     }
 }
