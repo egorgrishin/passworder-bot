@@ -75,8 +75,8 @@ $app->middleware([
     \App\Middleware\HashChatId::class,
     \App\Middleware\ChatAddedToDatabase::class,
     \App\Middleware\PasswordDefined::class,
-    \App\Middleware\Commands::class,
     \App\Middleware\SessionIsActive::class,
+    \App\Middleware\Commands::class,
 ]);
 
 /*
