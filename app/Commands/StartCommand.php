@@ -3,20 +3,19 @@
 namespace App\Commands;
 
 use App\Contracts\CommandInterface;
+use App\Helpers\Telegram\Telegram;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 
 class StartCommand implements CommandInterface
 {
     public function run(Request $request): void
     {
-        Log::debug($request->all());
-        $url = 'https://api.telegram.org/';
-        $bot = 'bot6521726004:AAHh86wPhEu2tg_DJethX90BxmOq4BUw5ks/';
-        Http::post($url . $bot . 'sendMessage', [
+        Telegram::send([
             'chat_id' => '935824965',
             'text' => 'Is a start command',
+            'reply_markup' => [
+                'keyboard' => ['Добавить', 'Посмотреть'],
+            ],
         ]);
     }
 }
