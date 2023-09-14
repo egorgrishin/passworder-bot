@@ -57,6 +57,7 @@ $app->singleton(
 */
 
 $app->configure('app');
+$app->configure('sess');
 $app->configure('hash');
 
 /*
@@ -74,7 +75,8 @@ $app->middleware([
     \App\Middleware\HashChatId::class,
     \App\Middleware\ChatAddedToDatabase::class,
     \App\Middleware\PasswordDefined::class,
-    \App\Middleware\Commands::class
+    \App\Middleware\Commands::class,
+    \App\Middleware\SessionIsActive::class,
 ]);
 
 /*
