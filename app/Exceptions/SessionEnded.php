@@ -22,7 +22,10 @@ class SessionEnded extends TelegramException implements TelegramInterface
     public function sendMessage(): void
     {
         $this->updateChatStage();
-        Telegram::send($this->chat_id, 'Сессия завершена. Для продолжения работы введите пароль');
+        Telegram::send([
+            'chat_id' => $this->chat_id,
+            'text' => 'Сессия завершена. Для продолжения работы введите пароль',
+        ]);
     }
 
     /**

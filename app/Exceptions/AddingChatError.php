@@ -10,6 +10,9 @@ class AddingChatError extends TelegramException implements TelegramInterface
 {
     public function sendMessage(): void
     {
-        Telegram::send($this->chat_id, 'Adding error');
+        Telegram::send([
+            'chat_id' => $this->chat_id,
+            'text'    => 'Adding error',
+        ]);
     }
 }

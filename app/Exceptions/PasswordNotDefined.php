@@ -22,7 +22,10 @@ class PasswordNotDefined extends TelegramException implements TelegramInterface
     public function sendMessage(): void
     {
         $this->updateChatStage();
-        Telegram::send($this->chat_id, 'Пароль не установлен. Введите пароль');
+        Telegram::send([
+            'chat_id' => $this->chat_id,
+            'text' => 'Пароль не установлен. Введите пароль',
+        ]);
     }
 
     /**
