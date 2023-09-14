@@ -3,6 +3,7 @@
 namespace App\Middleware;
 
 use App\Exceptions\AddingChatError;
+use App\Helpers\Chat;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -18,26 +19,17 @@ class ChatAddedToDatabase
     public function handle(Request $request, Closure $next): mixed
     {
         $hash = $request->input('hash');
-        if ($this->chatAddedToDatabase($hash)) {
+        if (Chat::getInstance() !== null) {
             return $next($request);
         }
 
         try {
             $this->addChatToDatabase($hash);
+            Chat::setInstance();
             return $next($request);
         } catch (Throwable) {
             throw new AddingChatError($request->input('message.chat.id'));
         }
-    }
-
-    /**
-     * Проверяет наличие чата пользователя с ботом в базе данных
-     */
-    private function chatAddedToDatabase(string $hash): bool
-    {
-        return DB::table('chats')
-            ->where('hash', $hash)
-            ->exists();
     }
 
     /**

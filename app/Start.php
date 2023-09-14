@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Helpers\Chat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
@@ -13,22 +14,12 @@ class Start
     public function start(Request $request)
     {
         Log::debug($request->all());
-        $chat = $this->getChatByHash($request->input('hash'));
+        $chat = Chat::getInstance();
         switch ($chat->stage) {
             case 'set_password':
                 $this->setPasswordHandler($request);
                 return;
         }
-    }
-
-    /**
-     * Возвращает чат по хэшу
-     */
-    private function getChatByHash(string $hash): object
-    {
-        return DB::table('chats')
-            ->where('hash', $hash)
-            ->first();
     }
 
     private function setPasswordHandler(Request $request): void
@@ -37,8 +28,9 @@ class Start
         DB::table('chats')
             ->where('hash', $request->input('hash'))
             ->update([
-                'password' => Hash::make($password),
+                'password'         => Hash::make($password),
                 'last_activity_at' => Date::now()->toDateTimeString(),
+                'stage'            => 'menu',
             ]);
     }
 }
