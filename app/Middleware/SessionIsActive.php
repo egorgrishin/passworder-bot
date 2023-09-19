@@ -26,6 +26,7 @@ class SessionIsActive
             Hash::check($text, $chat->password)
         ) {
             Chat::setLastActivity(Date::now()->toDateTimeString());
+            Chat::setStage('menu');
             return $next($request);
         }
 
