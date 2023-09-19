@@ -7,7 +7,7 @@ use App\Helpers\Chat;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class SessionIsActive
 {
@@ -18,7 +18,14 @@ class SessionIsActive
     public function handle(Request $request, Closure $next): mixed
     {
         $chat = Chat::getInstance();
-        if ($chat->stage === 'set_password' || $this->sessionIsActive($chat->last_activity_at)) {
+        $is_active = $this->sessionIsActive($chat->last_activity_at);
+        $text = $request->input('message.text', '');
+        if (
+            $chat->stage === 'set_password' ||
+            $is_active ||
+            Hash::check($text, $chat->password)
+        ) {
+            Chat::setLastActivity(Date::now()->toDateTimeString());
             return $next($request);
         }
 

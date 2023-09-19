@@ -37,4 +37,24 @@ class Chat
     {
         self::$attributes->stage = $stage;
     }
+
+    public static function setLastActivity(string $last_activity): void
+    {
+        self::$attributes->last_activity_at = $last_activity;
+    }
+
+    public static function commitChanges(): void
+    {
+        $changes = [];
+        foreach ((array) self::$attributes as $key => $value) {
+            if (self::$original->$key != $value) {
+                $changes[$key] = $value;
+            }
+        }
+
+        $hash = request()->input('hash');
+        DB::table('chats')
+            ->where('hash', $hash)
+            ->update($changes);
+    }
 }

@@ -35,6 +35,6 @@ class SessionEnded extends TelegramException implements TelegramInterface
     {
         DB::table('chats')
             ->where('hash', $this->hash)
-            ->update(['stage' => 'menu']);
+            ->update(['stage' => 'waiting_password']);
     }
 }
