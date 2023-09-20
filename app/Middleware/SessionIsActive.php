@@ -18,29 +18,14 @@ class SessionIsActive
     public function handle(Request $request, Closure $next): mixed
     {
         $chat = Chat::getInstance();
-        $is_active = $this->sessionIsActive($chat->last_activity_at);
         $text = $request->input('message.text', '');
-        if (
-            $chat->stage === 'set_password' ||
-            $is_active ||
-            Hash::check($text, $chat->password)
-        ) {
+
+        if ($chat->stage !== 'waiting_password' || Hash::check($text, $chat->password)) {
             Chat::setStage('menu');
             return $next($request);
         }
 
         $chat_id = $request->input('message.chat.id');
         throw new SessionEnded($chat_id, $chat->hash);
-    }
-
-    /**
-     * Проверяет активность сессии
-     */
-    private function sessionIsActive(string $last_activity): bool
-    {
-        $last_activity = Date::parse($last_activity);
-        $life_time = config('sess.life_time');
-
-        return $last_activity->addMinutes($life_time) >= Date::now();
     }
 }
