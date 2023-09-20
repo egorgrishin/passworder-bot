@@ -7,6 +7,7 @@ use App\Helpers\Chat;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Throwable;
 
@@ -18,6 +19,7 @@ class ChatAddedToDatabase
      */
     public function handle(Request $request, Closure $next): mixed
     {
+        Log::debug($request->all());
         $hash = $request->input('hash');
         if (Chat::getInstance() !== null) {
             return $next($request);
