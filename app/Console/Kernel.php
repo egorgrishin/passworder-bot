@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Commands;
+namespace App\Console;
 
 use App\Tasks\DisableChats;
 use Illuminate\Console\Scheduling\Schedule;
