@@ -16,7 +16,8 @@ class Chat
     public static function setInstance(): void
     {
         if (self::$original === null) {
-            self::$attributes = self::$original = self::getChat();
+            self::$attributes = self::getChat();
+            self::$original = self::getChat();
         }
     }
 
