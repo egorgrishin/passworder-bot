@@ -2,6 +2,7 @@
 
 namespace App\Commands;
 
+use App\Tasks\DisableChats;
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
 
@@ -19,6 +20,6 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        //
+        $schedule->call(new DisableChats())->everyMinute();
     }
 }
