@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid()->primary();
             $table->string('hash', 60)->unique();
             $table->string('password')->nullable();
-            $table->string('stage', 63)->nullable();
+            $table->string('stage', 63)->nullable()->index();
             $table->string('last_activity_at', 63)->nullable();
         });
     }
