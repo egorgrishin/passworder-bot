@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 
 class Chat
@@ -38,14 +39,12 @@ class Chat
         self::$attributes->stage = $stage;
     }
 
-    public static function setLastActivity(string $last_activity): void
-    {
-        self::$attributes->last_activity_at = $last_activity;
-    }
-
     public static function commitChanges(): void
     {
-        $changes = [];
+        $changes = [
+            'last_activity_at' => Date::now()->toDateTimeString(),
+        ];
+
         foreach ((array) self::$attributes as $key => $value) {
             if (self::$original->$key != $value) {
                 $changes[$key] = $value;
