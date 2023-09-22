@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Enums\Stage;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 
@@ -35,9 +36,9 @@ class Chat
             ->first();
     }
 
-    public static function setStage(string $stage): void
+    public static function setStage(Stage $stage): void
     {
-        self::$attributes->stage = $stage;
+        self::$attributes->stage = $stage->value;
     }
 
     public static function commitChanges(): void

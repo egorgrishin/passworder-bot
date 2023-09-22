@@ -2,11 +2,9 @@
 
 namespace App\Exceptions;
 
-use App\Contracts\TelegramException as TelegramInterface;
 use App\Helpers\Telegram\Telegram;
-use Illuminate\Support\Facades\Http;
 
-class AddingChatError extends TelegramException implements TelegramInterface
+class AddingChatError extends TelegramException
 {
     public function sendMessage(): void
     {

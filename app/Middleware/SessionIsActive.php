@@ -2,11 +2,11 @@
 
 namespace App\Middleware;
 
+use App\Enums\Stage;
 use App\Exceptions\SessionEnded;
 use App\Helpers\Chat;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Hash;
 
 class SessionIsActive
@@ -20,8 +20,8 @@ class SessionIsActive
         $chat = Chat::getInstance();
         $text = $request->input('message.text', '');
 
-        if ($chat->stage !== 'waiting_password' || Hash::check($text, $chat->password)) {
-            Chat::setStage('menu');
+        if ($chat->stage !== Stage::WaitingPassword->value || Hash::check($text, $chat->password)) {
+            Chat::setStage(Stage::Menu);
             return $next($request);
         }
 

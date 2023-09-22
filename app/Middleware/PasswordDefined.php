@@ -2,12 +2,11 @@
 
 namespace App\Middleware;
 
+use App\Enums\Stage;
 use App\Exceptions\PasswordNotDefined;
 use App\Helpers\Chat;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class PasswordDefined
 {
@@ -18,7 +17,7 @@ class PasswordDefined
     public function handle(Request $request, Closure $next): mixed
     {
         $chat = Chat::getInstance();
-        if ($chat->stage === 'set_password') {
+        if ($chat->stage === Stage::SetPassword->value) {
             return $next($request);
         }
 

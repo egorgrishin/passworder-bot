@@ -2,9 +2,8 @@
 
 namespace App\Exceptions;
 
-use App\Contracts\TelegramException;
+use App\Helpers\Telegram\Telegram;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Http;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -19,10 +18,7 @@ class Handler extends ExceptionHandler
         if ($e instanceof TelegramException) {
             $e->sendMessage();
         } else {
-            $url = 'https://api.telegram.org/';
-            $bot = 'bot6521726004:AAHh86wPhEu2tg_DJethX90BxmOq4BUw5ks/';
-
-            Http::post($url . $bot . 'sendMessage', [
+            Telegram::send([
                 'chat_id' => $request->input('message.chat.id'),
                 'text'    => 'Server error',
             ]);

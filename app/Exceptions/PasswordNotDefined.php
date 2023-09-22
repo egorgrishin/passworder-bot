@@ -2,11 +2,11 @@
 
 namespace App\Exceptions;
 
-use App\Contracts\TelegramException as TelegramInterface;
+use App\Enums\Stage;
 use App\Helpers\Telegram\Telegram;
 use Illuminate\Support\Facades\DB;
 
-class PasswordNotDefined extends TelegramException implements TelegramInterface
+class PasswordNotDefined extends TelegramException
 {
     private string $hash;
 
@@ -24,7 +24,7 @@ class PasswordNotDefined extends TelegramException implements TelegramInterface
         $this->updateChatStage();
         Telegram::send([
             'chat_id' => $this->chat_id,
-            'text' => 'Пароль не установлен. Введите пароль',
+            'text'    => 'Пароль не установлен. Введите пароль',
         ]);
     }
 
@@ -35,6 +35,6 @@ class PasswordNotDefined extends TelegramException implements TelegramInterface
     {
         DB::table('chats')
             ->where('hash', $this->hash)
-            ->update(['stage' => 'set_password']);
+            ->update(['stage' => Stage::SetPassword->value]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Tasks;
 
+use App\Enums\Stage;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 
@@ -13,9 +14,9 @@ class DisableChats
         $inactive_date = Date::now()->subMinutes($life_time)->toDateTimeString();
         DB::table('chats')
             ->where('last_activity_at', '<=', $inactive_date)
-            ->where('stage', '<>', 'waiting_password')
+            ->where('stage', '<>', Stage::WaitingPassword->value)
             ->update([
-                'stage' => 'waiting_password',
+                'stage' => Stage::WaitingPassword->value,
             ]);
     }
 }

@@ -11,10 +11,10 @@ class Telegram
     /**
      * Отправляет сообщение от бота в Telegram
      */
-    public static function send(array $data): void
+    public static function send(array $data)
     {
         $token = env('TELEGRAM_BOT_TOKEN');
 
-        Http::post(self::URL . "/bot$token/sendMessage", $data);
+        return Http::post(self::URL . "/bot$token/sendMessage", $data);
     }
 }

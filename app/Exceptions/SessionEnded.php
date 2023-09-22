@@ -2,11 +2,11 @@
 
 namespace App\Exceptions;
 
-use App\Contracts\TelegramException as TelegramInterface;
+use App\Enums\Stage;
 use App\Helpers\Telegram\Telegram;
 use Illuminate\Support\Facades\DB;
 
-class SessionEnded extends TelegramException implements TelegramInterface
+class SessionEnded extends TelegramException
 {
     private string $hash;
 
@@ -35,6 +35,6 @@ class SessionEnded extends TelegramException implements TelegramInterface
     {
         DB::table('chats')
             ->where('hash', $this->hash)
-            ->update(['stage' => 'waiting_password']);
+            ->update(['stage' => Stage::WaitingPassword->value]);
     }
 }

@@ -2,36 +2,58 @@
 
 namespace App;
 
+use App\Commands\HelpCommand;
+use App\Commands\MenuCommand;
+use App\Contracts\CommandInterface;
+use App\Enums\Stage;
+use App\Handlers\MenuHandler;
+use App\Handlers\SetPasswordHandler;
+use App\Handlers\WaitingPasswordHandler;
 use App\Helpers\Chat;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Date;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 
 class Start
 {
-    public function start(Request $request)
+    private const COMMANDS = [
+        '/menu' => MenuCommand::class,
+        '/help' => HelpCommand::class,
+    ];
+
+    private const STAGES = [
+        Stage::SetPassword->value     => SetPasswordHandler::class,
+        Stage::WaitingPassword->value => WaitingPasswordHandler::class,
+        Stage::Menu->value            => MenuHandler::class,
+    ];
+
+    public function start(Request $request): void
     {
-        return response()->json();
-        Log::debug($request->all());
-        $chat = Chat::getInstance();
-        switch ($chat->stage) {
-            case 'set_password':
-                $this->setPasswordHandler($request);
-                return;
-        }
+        $message = $request->input('message.text');
+
+        $this->messageIsCommand($message)
+            ? $this->runCommandHandler($request)
+            : $this->runStageHandler($request);
     }
 
-    private function setPasswordHandler(Request $request): void
+    private function messageIsCommand(string $message): bool
     {
-        $password = $request->input('message.text');
-        DB::table('chats')
-            ->where('hash', $request->input('hash'))
-            ->update([
-                'password'         => Hash::make($password),
-                'last_activity_at' => Date::now()->toDateTimeString(),
-                'stage'            => 'menu',
-            ]);
+        return array_key_exists($message, self::COMMANDS);
+    }
+
+    public function runCommandHandler(Request $request): void
+    {
+        $command = $request->input('message.text');
+
+        /** @var CommandInterface $handler */
+        $handler = new (self::COMMANDS[$command]);
+        $handler->run($request);
+    }
+
+    public function runStageHandler(Request $request): void
+    {
+        $chat = Chat::getInstance();
+
+        /** @var CommandInterface $handler */
+        $handler = new (self::STAGES[$chat->stage]);
+        $handler->run($request);
     }
 }
