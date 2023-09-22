@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Dto;
 use App\Enums\Stage;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
@@ -21,7 +22,7 @@ class Chat
             self::$original = self::getChat($hash);
         }
 
-        return self::$original === null;
+        return self::$original !== null;
     }
 
     public static function getInstance(): ?object
@@ -41,7 +42,7 @@ class Chat
         self::$attributes->stage = $stage->value;
     }
 
-    public static function commitChanges(): void
+    public static function commitChanges(Dto $dto): void
     {
         $changes = [
             'last_activity_at' => Date::now()->toDateTimeString(),
@@ -53,9 +54,8 @@ class Chat
             }
         }
 
-        $hash = request()->input('hash');
         DB::table('chats')
-            ->where('hash', $hash)
+            ->where('hash', $dto->hash)
             ->update($changes);
     }
 }
