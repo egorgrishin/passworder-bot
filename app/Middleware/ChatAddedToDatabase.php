@@ -2,9 +2,9 @@
 
 namespace App\Middleware;
 
-use App\Dto;
 use App\Exceptions\AddingChatError;
 use App\Helpers\Chat;
+use App\Request;
 use Closure;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -16,18 +16,18 @@ class ChatAddedToDatabase
      * Проверяет существование чата в базе данных
      * @throws AddingChatError
      */
-    public function handle(Dto $dto, Closure $next): mixed
+    public function handle(Request $request, Closure $next): mixed
     {
-        if (Chat::setInstance($dto->hash)) {
-            return $next($dto);
+        if (Chat::setInstance($request->dto->hash)) {
+            return $next($request);
         }
 
         try {
-            $this->addChatToDatabase($dto->hash);
-            Chat::setInstance($dto->hash);
-            return $next($dto);
+            $this->addChatToDatabase($request->dto->hash);
+            Chat::setInstance($request->dto->hash);
+            return $next($request);
         } catch (Throwable) {
-            throw new AddingChatError($dto);
+            throw new AddingChatError($request->dto);
         }
     }
 

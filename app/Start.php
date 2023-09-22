@@ -24,11 +24,11 @@ class Start
         Stage::Menu->value            => MenuHandler::class,
     ];
 
-    public function start(Dto $dto): void
+    public function start(Request $request): void
     {
-        $this->messageIsCommand($dto->data)
-            ? $this->runCommandHandler($dto)
-            : $this->runStageHandler($dto);
+        $this->messageIsCommand($request->dto->data)
+            ? $this->runCommandHandler($request->dto)
+            : $this->runStageHandler($request->dto);
     }
 
     private function messageIsCommand(string $message): bool

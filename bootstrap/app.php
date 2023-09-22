@@ -20,7 +20,7 @@ date_default_timezone_set(env('APP_TIMEZONE', 'UTC'));
 |
 */
 
-$app = new \Laravel\Lumen\Application(dirname(__DIR__));
+$app = new \App\Application(dirname(__DIR__));
 
 $app->withFacades();
 $app->withEloquent();
@@ -72,7 +72,6 @@ $app->configure('hash');
 */
 
 $app->middleware([
-    \App\Middleware\HashChatId::class,
     \App\Middleware\ChatAddedToDatabase::class,
     \App\Middleware\PasswordDefined::class,
     \App\Middleware\SessionIsActive::class,
@@ -91,5 +90,6 @@ $app->middleware([
 */
 
 $app->register(\App\Providers\AppServiceProvider::class);
+$app->bind(\App\Request::class, fn () => \App\Request::capture());
 
 return $app;
