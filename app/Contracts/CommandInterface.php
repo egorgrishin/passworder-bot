@@ -2,9 +2,9 @@
 
 namespace App\Contracts;
 
-use Illuminate\Http\Request;
+use App\Dto;
 
 interface CommandInterface
 {
-    public function run(Request $request);
+    public function run(Dto $dto);
 }

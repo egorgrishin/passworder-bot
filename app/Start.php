@@ -10,7 +10,6 @@ use App\Handlers\MenuHandler;
 use App\Handlers\SetPasswordHandler;
 use App\Handlers\WaitingPasswordHandler;
 use App\Helpers\Chat;
-use Illuminate\Http\Request;
 
 class Start
 {
@@ -25,13 +24,11 @@ class Start
         Stage::Menu->value            => MenuHandler::class,
     ];
 
-    public function start(Request $request): void
+    public function start(Dto $dto): void
     {
-        $message = $request->input('message.text');
-
-        $this->messageIsCommand($message)
-            ? $this->runCommandHandler($request)
-            : $this->runStageHandler($request);
+        $this->messageIsCommand($dto->data)
+            ? $this->runCommandHandler($dto)
+            : $this->runStageHandler($dto);
     }
 
     private function messageIsCommand(string $message): bool
@@ -39,21 +36,19 @@ class Start
         return array_key_exists($message, self::COMMANDS);
     }
 
-    public function runCommandHandler(Request $request): void
+    public function runCommandHandler(Dto $dto): void
     {
-        $command = $request->input('message.text');
-
         /** @var CommandInterface $handler */
-        $handler = new (self::COMMANDS[$command]);
-        $handler->run($request);
+        $handler = new (self::COMMANDS[$dto->data]);
+        $handler->run($dto);
     }
 
-    public function runStageHandler(Request $request): void
+    public function runStageHandler(Dto $dto): void
     {
         $chat = Chat::getInstance();
 
         /** @var CommandInterface $handler */
         $handler = new (self::STAGES[$chat->stage]);
-        $handler->run($request);
+        $handler->run($dto);
     }
 }

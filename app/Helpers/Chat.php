@@ -14,23 +14,23 @@ class Chat
     private function __construct() {}
     protected function __clone() {}
 
-    public static function setInstance(): void
+    public static function setInstance(string $hash): bool
     {
         if (self::$original === null) {
-            self::$attributes = self::getChat();
-            self::$original = self::getChat();
+            self::$attributes = self::getChat($hash);
+            self::$original = self::getChat($hash);
         }
+
+        return self::$original === null;
     }
 
     public static function getInstance(): ?object
     {
-        self::setInstance();
         return self::$original;
     }
 
-    private static function getChat(): ?object
+    private static function getChat(string $hash): ?object
     {
-        $hash = request()->input('hash');
         return DB::table('chats')
             ->where('hash', $hash)
             ->first();

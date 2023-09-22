@@ -2,9 +2,9 @@
 
 namespace App\Contracts;
 
-use Illuminate\Http\Request;
+use App\Dto;
 
 interface TelegramHandler
 {
-    public function run(Request $request): void;
+    public function run(Dto $dto): void;
 }

@@ -2,11 +2,11 @@
 
 namespace App\Middleware;
 
+use App\Dto;
 use App\Enums\Stage;
 use App\Exceptions\PasswordNotDefined;
 use App\Helpers\Chat;
 use Closure;
-use Illuminate\Http\Request;
 
 class PasswordDefined
 {
@@ -14,18 +14,17 @@ class PasswordDefined
      * Handle an incoming request.
      * @throws PasswordNotDefined
      */
-    public function handle(Request $request, Closure $next): mixed
+    public function handle(Dto $dto, Closure $next): mixed
     {
         $chat = Chat::getInstance();
         if ($chat->stage === Stage::SetPassword->value) {
-            return $next($request);
+            return $next($dto);
         }
 
         if ($chat->password === null) {
-            $chat_id = $request->input('message.chat.id');
-            throw new PasswordNotDefined($chat_id, $chat->hash);
+            throw new PasswordNotDefined($dto);
         }
 
-        return $next($request);
+        return $next($dto);
     }
 }

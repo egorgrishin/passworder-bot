@@ -8,14 +8,6 @@ use Illuminate\Support\Facades\DB;
 
 class PasswordNotDefined extends TelegramException
 {
-    private string $hash;
-
-    public function __construct(int $chat_id, string $hash)
-    {
-        parent::__construct($chat_id);
-        $this->hash = $hash;
-    }
-
     /**
      * Отправляет сообщение о том что нужно установить пароль
      */
@@ -23,7 +15,7 @@ class PasswordNotDefined extends TelegramException
     {
         $this->updateChatStage();
         Telegram::send([
-            'chat_id' => $this->chat_id,
+            'chat_id' => $this->dto->chat_id,
             'text'    => 'Пароль не установлен. Введите пароль',
         ]);
     }
@@ -34,7 +26,7 @@ class PasswordNotDefined extends TelegramException
     private function updateChatStage(): void
     {
         DB::table('chats')
-            ->where('hash', $this->hash)
+            ->where('hash', $this->dto->hash)
             ->update(['stage' => Stage::SetPassword->value]);
     }
 }

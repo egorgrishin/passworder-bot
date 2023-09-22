@@ -2,9 +2,9 @@
 
 namespace App\Middleware;
 
+use App\Dto;
 use App\Helpers\Chat;
 use Closure;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class SendMessageByStage
@@ -12,9 +12,9 @@ class SendMessageByStage
     /**
      * Handle an incoming request.
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Dto $dto, Closure $next)
     {
-        $response = $next($request);
+        $response = $next($dto);
         Chat::commitChanges();
         Log::debug('closing');
     }

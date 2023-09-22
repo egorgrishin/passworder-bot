@@ -3,18 +3,18 @@
 namespace App\Commands;
 
 use App\Contracts\CommandInterface;
+use App\Dto;
 use App\Enums\MenuButton;
 use App\Enums\Stage;
 use App\Helpers\Chat;
 use App\Helpers\Telegram\Telegram;
-use Illuminate\Http\Request;
 
 class MenuCommand implements CommandInterface
 {
-    public function run(Request $request): void
+    public function run(Dto $dto): void
     {
         Telegram::send([
-            'chat_id'      => $request->input('message.chat.id'),
+            'chat_id'      => $dto->chat_id,
             'text'         => 'Выберите действие',
             'reply_markup' => [
                 'inline_keyboard'   => [

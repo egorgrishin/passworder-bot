@@ -2,10 +2,9 @@
 
 namespace App\Middleware;
 
-use App\Helpers\Hasher;
+use App\Dto;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class HashChatId
 {
@@ -14,10 +13,6 @@ class HashChatId
      */
     public function handle(Request $request, Closure $next): mixed
     {
-        Log::debug($request->all());
-        $chat_id = $request->input('message.chat.id');
-        $request->offsetSet('hash', Hasher::make($chat_id));
-
-        return $next($request);
+        return $next(Dto::make($request));
     }
 }
