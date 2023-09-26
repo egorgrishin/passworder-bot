@@ -23,12 +23,14 @@ class SetPassword implements TelegramHandler
 
     private function updateCredentials(Dto $dto): void
     {
+        $data = ['is_saved' => 1];
+        if ($dto->data !== '@skip') {
+            $data['password'] = $dto->data;
+        }
+
         DB::table('credentials')
             ->where('chat_hash', $dto->hash)
             ->where('is_saved', 0)
-            ->update([
-                'password' => $dto->data,
-                'is_saved' => 1,
-            ]);
+            ->update($data);
     }
 }
