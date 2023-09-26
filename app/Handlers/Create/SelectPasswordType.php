@@ -13,18 +13,18 @@ class SelectPasswordType implements TelegramHandler
 {
     public function run(Dto $dto): void
     {
-        if ($dto->data == Password::Enter->value) {
+        if ($dto->data == Password::Enter->name) {
             Telegram::send([
                 'chat_id' => $dto->chat_id,
                 'text'    => "Введите пароль. Для пропуска введите @skip",
             ]);
             Chat::setStage(Stage::SetPassword);
-        } elseif ($dto->data == Password::Generate->value) {
+        } elseif ($dto->data == Password::Generate->name) {
             Telegram::send([
                 'chat_id' => $dto->chat_id,
                 'text'    => "Введите длину пароля. Желательно 32, но не менее 8",
             ]);
-            Chat::setStage(Stage::Menu);
+            Chat::setStage(Stage::SetPasswordLen);
         }
     }
 }
