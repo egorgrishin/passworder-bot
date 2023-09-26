@@ -2,11 +2,15 @@
 
 namespace App\Providers;
 
-use App\Parents\BaseServiceProvider;
+use App\Application;
 use App\Start;
+use Illuminate\Support\ServiceProvider;
 use Laravel\Lumen\Routing\Router;
 
-class AppServiceProvider extends BaseServiceProvider
+/**
+ * @property Application $app
+ */
+class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any events for your application.
