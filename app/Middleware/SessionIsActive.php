@@ -18,10 +18,10 @@ class SessionIsActive
     public function handle(Request $request, Closure $next): mixed
     {
         $chat = Chat::getInstance();
-        if (
-            $chat->stage !== Stage::WaitingPassword->value ||
-            Hash::check($request->dto->data, $chat->password)
-        ) {
+        if ($chat->stage !== Stage::WaitingPassword->value) {
+            return $next($request);
+        }
+        if (Hash::check($request->dto->data, $chat->password)) {
             Chat::setStage(Stage::Menu);
             return $next($request);
         }
