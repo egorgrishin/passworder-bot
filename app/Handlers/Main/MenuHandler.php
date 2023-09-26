@@ -24,6 +24,6 @@ class MenuHandler implements TelegramHandler
             'chat_id' => $dto->chat_id,
             'text'    => 'Введите название ресурса',
         ]);
-        Chat::setStage(Stage::SetResourceName);
+        Chat::setStage(Stage::SetTitle);
     }
 }

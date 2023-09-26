@@ -6,7 +6,7 @@ use App\Commands\HelpCommand;
 use App\Commands\MenuCommand;
 use App\Contracts\CommandInterface;
 use App\Enums\Stage;
-use App\Handlers\Create\SetResourceName;
+use App\Handlers\Create\SetTitle;
 use App\Handlers\Main\MenuHandler;
 use App\Handlers\Main\SetPasswordHandler;
 use App\Handlers\Main\WaitingPasswordHandler;
@@ -23,7 +23,7 @@ class Start
         Stage::SetPassword->value     => SetPasswordHandler::class,
         Stage::WaitingPassword->value => WaitingPasswordHandler::class,
         Stage::Menu->value            => MenuHandler::class,
-        Stage::SetResourceName->value => SetResourceName::class,
+        Stage::SetTitle->value        => SetTitle::class,
     ];
 
     public function start(Request $request): void

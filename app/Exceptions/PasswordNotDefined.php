@@ -27,6 +27,6 @@ class PasswordNotDefined extends TelegramException
     {
         DB::table('chats')
             ->where('hash', $this->dto->hash)
-            ->update(['stage' => Stage::SetPassword->value]);
+            ->update(['stage' => Stage::SetChatPassword->value]);
     }
 }
