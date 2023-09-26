@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('password', 511)->nullable();
             $table->boolean('is_saved')->default(0)->index();
 
-            $table->foreign('chat_hash')->references('chats')->on('hash');
+            $table->foreign('chat_hash')->references('hash')->on('chats');
         });
     }
 
