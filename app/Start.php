@@ -6,6 +6,10 @@ use App\Commands\HelpCommand;
 use App\Commands\MenuCommand;
 use App\Contracts\CommandInterface;
 use App\Enums\Stage;
+use App\Handlers\Create\SelectPasswordLen;
+use App\Handlers\Create\SelectPasswordType;
+use App\Handlers\Create\SetLogin;
+use App\Handlers\Create\SetPassword;
 use App\Handlers\Create\SetTitle;
 use App\Handlers\Main\MenuHandler;
 use App\Handlers\Main\SetPasswordHandler;
@@ -20,10 +24,14 @@ class Start
     ];
 
     private const STAGES = [
-        Stage::SetPassword->value     => SetPasswordHandler::class,
-        Stage::WaitingPassword->value => WaitingPasswordHandler::class,
-        Stage::Menu->value            => MenuHandler::class,
-        Stage::SetTitle->value        => SetTitle::class,
+        Stage::SetChatPassword->value    => SetPasswordHandler::class,
+        Stage::WaitingPassword->value    => WaitingPasswordHandler::class,
+        Stage::Menu->value               => MenuHandler::class,
+        Stage::SetTitle->value           => SetTitle::class,
+        Stage::SetLogin->value           => SetLogin::class,
+        Stage::SelectPasswordType->value => SelectPasswordType::class,
+        Stage::SetPasswordLen->value     => SelectPasswordLen::class,
+        Stage::SetPassword->value        => SetPassword::class,
     ];
 
     public function start(Request $request): void

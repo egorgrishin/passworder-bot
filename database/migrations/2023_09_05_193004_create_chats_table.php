@@ -12,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('chats', function (Blueprint $table) {
-            $table->uuid()->primary();
-            $table->string('hash', 60)->unique();
+            $table->string('hash', 60)->primary();
             $table->string('password')->nullable();
             $table->string('stage', 63)->nullable()->index();
             $table->string('last_activity_at', 63)->nullable();

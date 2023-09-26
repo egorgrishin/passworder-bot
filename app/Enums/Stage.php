@@ -9,5 +9,7 @@ enum Stage: string
     case Menu = 'menu';
     case SetTitle = 'set_title';
     case SetLogin = 'set_login';
+    case SelectPasswordType = 'select_password_type';
+    case SetPasswordLen = 'set_password_len';
     case SetPassword = 'set_password';
 }
