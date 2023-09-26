@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Handlers;
+namespace App\Handlers\Main;
 
 use App\Contracts\TelegramHandler;
 use App\Dto;
