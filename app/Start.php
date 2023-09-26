@@ -23,17 +23,6 @@ class Start
         '/help' => HelpCommand::class,
     ];
 
-    private const STAGES = [
-        Stage::SetChatPassword->value    => SetPasswordHandler::class,
-        Stage::WaitingPassword->value    => WaitingPasswordHandler::class,
-        Stage::Menu->value               => MenuHandler::class,
-        Stage::SetTitle->value           => SetTitle::class,
-        Stage::SetLogin->value           => SetLogin::class,
-        Stage::SelectPasswordType->value => SelectPasswordType::class,
-        Stage::SetPasswordLen->value     => SelectPasswordLen::class,
-        Stage::SetPassword->value        => SetPassword::class,
-    ];
-
     public function start(Request $request): void
     {
         $this->messageIsCommand($request->dto->data)
@@ -58,7 +47,21 @@ class Start
         $chat = Chat::getInstance();
 
         /** @var CommandInterface $handler */
-        $handler = new (self::STAGES[$chat->stage]);
+        $handler = new ($this->getStages()[$chat->stage]);
         $handler->run($dto);
+    }
+
+    private function getStages(): array
+    {
+        return [
+            Stage::SetChatPassword->value    => SetPasswordHandler::class,
+            Stage::WaitingPassword->value    => WaitingPasswordHandler::class,
+            Stage::Menu->value               => MenuHandler::class,
+            Stage::SetTitle->value           => SetTitle::class,
+            Stage::SetLogin->value           => SetLogin::class,
+            Stage::SelectPasswordType->value => SelectPasswordType::class,
+            Stage::SetPasswordLen->value     => SelectPasswordLen::class,
+            Stage::SetPassword->value        => SetPassword::class,
+        ];
     }
 }

@@ -2,9 +2,9 @@
 
 namespace App\Data\Seeders;
 
-use App\Parents\BaseSeeder;
+use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends BaseSeeder
+class DatabaseSeeder extends Seeder
 {
     /**
      * Run the database seeds.

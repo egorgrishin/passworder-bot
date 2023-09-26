@@ -5,11 +5,11 @@ namespace App;
 use App\Helpers\Hasher;
 use Illuminate\Http\Request;
 
-readonly class Dto
+class Dto
 {
-    public int $chat_id;
-    public string $hash;
-    public string $data;
+    public readonly int $chat_id;
+    public readonly string $hash;
+    public readonly string $data;
 
     public static function make(Request $request): self
     {
