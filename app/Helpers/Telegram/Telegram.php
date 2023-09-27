@@ -41,7 +41,7 @@ class Telegram
         $token = env('TELEGRAM_BOT_TOKEN');
         Http::post(self::URL . "/bot$token/deleteMessage", [
             'chat_id'    => $chat_id,
-            'message_id' => $chat->outgoing_message_id - 1 - 1,
+            'message_id' => $chat->outgoing_message_id,
         ]);
     }
 }
