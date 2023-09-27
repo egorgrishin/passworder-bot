@@ -3,6 +3,7 @@
 namespace App\Middleware;
 
 use App\Helpers\Chat;
+use App\Helpers\Telegram\Telegram;
 use App\Request;
 use Closure;
 use Illuminate\Support\Facades\Log;
@@ -16,6 +17,9 @@ class SendMessageByStage
     {
         $response = $next($request);
         Chat::commitChanges($request->dto);
+        if ($request->dto->message_id) {
+            Telegram::deleteMessage($request->dto->chat_id, $request->dto->message_id);
+        }
         Log::debug('closing');
     }
 }
