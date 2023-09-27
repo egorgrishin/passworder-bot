@@ -17,7 +17,6 @@ class SendMessageByStage
     {
         $response = $next($request);
         Chat::commitChanges($request->dto);
-        Telegram::deleteMessage($request->dto->chat_id, $request->dto->message_id);
         Log::debug('closing');
     }
 }

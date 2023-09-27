@@ -14,25 +14,47 @@ class Telegram
      */
     public static function send(array $data)
     {
-        $token = env('TELEGRAM_BOT_TOKEN');
+        $chat = Chat::getInstance();
+        if ($chat->last_message_id) {
+            self::updateMessage($data);
+        } else {
+            self::sendMessage($data);
+        }
+    }
 
+    private static function updateMessage(array $data): void
+    {
+        $chat = Chat::getInstance();
+        $token = env('TELEGRAM_BOT_TOKEN');
+        Http::post(self::URL . "/bot$token/editMessageText", [
+            'chat_id'    => $data['chat_id'],
+            'message_id' => $chat->last_message_id,
+            'text'       => $data['text'],
+        ]);
+
+        $update = [
+            'chat_id'    => $data['chat_id'],
+            'message_id' => $chat->last_message_id,
+        ];
+        if (!empty($data['reply_markup'])) {
+            $update['reply_markup'] = $data['reply_markup'];
+        }
+        Http::post(self::URL . "/bot$token/editMessageReplyMarkup", $update);
+    }
+
+    private static function sendMessage(array $data)
+    {
+        $token = env('TELEGRAM_BOT_TOKEN');
         $response = Http::post(self::URL . "/bot$token/sendMessage", $data);
         if (!$response->successful()) {
             return;
         }
-        self::deleteLastOutgoingMessage($data['chat_id']);
 
         $body = json_decode($response->body(), true);
         if (empty($body['ok']) || empty($body['result'])) {
             return;
         }
         Chat::setOutgoingMessageId($body['result']['message_id']);
-    }
-
-    private static function deleteLastOutgoingMessage(int $chat_id): void
-    {
-        $chat = Chat::getInstance();
-        self::deleteMessage($chat_id, $chat->last_message_id);
     }
 
     public static function deleteMessage(int $chat_id, ?int $message_id): void

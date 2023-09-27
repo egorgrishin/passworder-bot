@@ -17,7 +17,7 @@ class PasswordDefined
     public function handle(Request $request, Closure $next): mixed
     {
         $chat = Chat::getInstance();
-        if ($chat->stage === Stage::SetChatPassword->value) {
+        if ($chat->stage === Stage::SetChatPassword->value || $request->dto->data === '/start') {
             return $next($request);
         }
 

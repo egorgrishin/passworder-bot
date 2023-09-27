@@ -21,7 +21,6 @@ class Handler extends ExceptionHandler
         if ($e instanceof TelegramException) {
             $e->sendMessage();
             Chat::commitChanges($request->dto);
-            Telegram::deleteMessage($request->dto->chat_id, $request->dto->message_id);
         } else {
             Telegram::send([
                 'chat_id' => $request->input('message.chat.id'),
