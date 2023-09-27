@@ -40,7 +40,7 @@ class Telegram
         $token = env('TELEGRAM_BOT_TOKEN');
         Http::post(self::URL . "/bot$token/editMessageText", [
             'chat_id'    => $data['chat_id'],
-            'message_id' => 857,
+            'message_id' => $chat->last_message_id,
             'text'       => $data['text'],
         ]);
 
