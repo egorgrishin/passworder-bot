@@ -18,7 +18,9 @@ class ChatAddedToDatabase
      */
     public function handle(Request $request, Closure $next): mixed
     {
-        Telegram::deleteMessage($request->dto->chat_id, $request->dto->message_id);
+        if ($request->dto->data !== '/start') {
+            Telegram::deleteMessage($request->dto->chat_id, $request->dto->message_id);
+        }
         if (Chat::setInstance($request->dto->hash)) {
             return $next($request);
         }
