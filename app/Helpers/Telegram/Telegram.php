@@ -4,7 +4,6 @@ namespace App\Helpers\Telegram;
 
 use App\Helpers\Chat;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 
 class Telegram
 {
@@ -18,7 +17,6 @@ class Telegram
         $token = env('TELEGRAM_BOT_TOKEN');
 
         $response = Http::post(self::URL . "/bot$token/sendMessage", $data);
-        Log::debug(!$response->successful());
         if (!$response->successful()) {
             return;
         }
