@@ -15,6 +15,7 @@ class NewMessageCommand implements CommandInterface
     {
         $chat = Chat::getInstance();
         Telegram::deleteMessage($dto->chat_id, $chat->last_message_id);
+        Chat::setOutgoingMessageId(null);
         Telegram::send([
             'chat_id'      => $dto->chat_id,
             'text'         => 'Выберите действие',

@@ -27,7 +27,7 @@ class Chat
 
     public static function getInstance(): ?object
     {
-        return self::$original;
+        return self::$attributes;
     }
 
     private static function getChat(string $hash): ?object
@@ -42,7 +42,7 @@ class Chat
         self::$attributes->stage = $stage->value;
     }
 
-    public static function setOutgoingMessageId(int $message_id): void
+    public static function setOutgoingMessageId(?int $message_id): void
     {
         self::$attributes->last_message_id = $message_id;
     }
