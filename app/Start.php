@@ -4,6 +4,7 @@ namespace App;
 
 use App\Commands\HelpCommand;
 use App\Commands\MenuCommand;
+use App\Commands\NewMessageCommand;
 use App\Commands\StartCommand;
 use App\Contracts\CommandInterface;
 use App\Enums\Stage;
@@ -20,9 +21,10 @@ use App\Helpers\Chat;
 class Start
 {
     private const COMMANDS = [
-        '/start' => StartCommand::class,
-        '/menu'  => MenuCommand::class,
-        '/help'  => HelpCommand::class,
+        '/start'       => StartCommand::class,
+        '/menu'        => MenuCommand::class,
+        '/help'        => HelpCommand::class,
+        '/new-message' => NewMessageCommand::class,
     ];
 
     public function start(Request $request): void
