@@ -15,8 +15,7 @@ return new class extends Migration
             $table->string('hash', 60)->primary();
             $table->string('password')->nullable();
             $table->string('stage', 63)->nullable()->index();
-            $table->bigInteger('outgoing_message_id')->unsigned()->nullable();
-            $table->bigInteger('incoming_message_id')->unsigned()->nullable();
+            $table->bigInteger('last_message_id')->unsigned()->nullable();
             $table->dateTime('last_activity_at')->nullable();
         });
     }

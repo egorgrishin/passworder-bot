@@ -32,13 +32,15 @@ class Telegram
     private static function deleteLastOutgoingMessage(int $chat_id): void
     {
         $chat = Chat::getInstance();
-        if ($chat->outgoing_message_id) {
-            self::deleteMessage($chat_id, $chat->outgoing_message_id);
-        }
+        self::deleteMessage($chat_id, $chat->last_message_id);
     }
 
-    public static function deleteMessage(int $chat_id, int $message_id): void
+    public static function deleteMessage(int $chat_id, ?int $message_id): void
     {
+        if (!$message_id) {
+            return;
+        }
+
         $token = env('TELEGRAM_BOT_TOKEN');
         Http::post(self::URL . "/bot$token/deleteMessage", [
             'chat_id'    => $chat_id,

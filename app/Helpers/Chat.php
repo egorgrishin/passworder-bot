@@ -44,7 +44,7 @@ class Chat
 
     public static function setOutgoingMessageId(int $message_id): void
     {
-        self::$attributes->outgoing_message_id = $message_id;
+        self::$attributes->last_message_id = $message_id;
     }
 
     public static function commitChanges(Dto $dto): void
