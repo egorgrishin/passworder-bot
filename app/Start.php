@@ -21,10 +21,10 @@ use App\Helpers\Chat;
 class Start
 {
     private const COMMANDS = [
-        '/start'       => StartCommand::class,
-        '/menu'        => MenuCommand::class,
-        '/help'        => HelpCommand::class,
-        '/new-message' => NewMessageCommand::class,
+        '/start'      => StartCommand::class,
+        '/menu'       => MenuCommand::class,
+        '/help'       => HelpCommand::class,
+        '/newmessage' => NewMessageCommand::class,
     ];
 
     public function start(Request $request): void
