@@ -30,7 +30,7 @@ class Telegram
         return Http::post(self::URL . "/bot$token/editMessageText", [
             'chat_id'    => $data['chat_id'],
             'message_id' => $chat->last_message_id,
-            'text'       => $chat->last_message_text,
+            'text'       => $chat->last_message_text . '(updating)',
         ])->successful();
     }
 
