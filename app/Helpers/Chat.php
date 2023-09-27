@@ -42,6 +42,11 @@ class Chat
         self::$attributes->stage = $stage->value;
     }
 
+    public static function setOutgoingMessageId(int $message_id): void
+    {
+        self::$attributes->outgoing_message_id = $message_id;
+    }
+
     public static function commitChanges(Dto $dto): void
     {
         $changes = [

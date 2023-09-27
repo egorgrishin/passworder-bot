@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 class Dto
 {
+    public readonly ?int $message_id;
     public readonly int $chat_id;
     public readonly string $hash;
     public readonly string $data;
@@ -15,9 +16,11 @@ class Dto
     {
         $dto = new self();
         if (self::isCommonMessage($request)) {
+            $dto->message_id = $request->input('message.message_id');
             $dto->chat_id = $request->input('message.chat.id');
             $dto->data = $request->input('message.text', '');
         } else {
+            $dto->message_id = null;
             $dto->chat_id = $request->input('callback_query.from.id');
             $dto->data = $request->input('callback_query.data');
         }
