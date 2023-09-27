@@ -47,6 +47,11 @@ class Chat
         self::$attributes->last_message_id = $message_id;
     }
 
+    public static function setLastMessageText(?string $text): void
+    {
+        self::$attributes->last_message_text = $text;
+    }
+
     public static function commitChanges(Dto $dto): void
     {
         $changes = [

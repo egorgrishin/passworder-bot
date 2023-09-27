@@ -15,11 +15,23 @@ class Telegram
     public static function send(array $data)
     {
         $chat = Chat::getInstance();
-        if ($chat->last_message_id) {
+        if ($chat->last_message_id && self::messageIsExists($data)) {
             self::updateMessage($data);
         } else {
             self::sendMessage($data);
         }
+        Chat::setLastMessageText($data['text']);
+    }
+
+    private static function messageIsExists(array $data): bool
+    {
+        $chat = Chat::getInstance();
+        $token = env('TELEGRAM_BOT_TOKEN');
+        return Http::post(self::URL . "/bot$token/editMessageText", [
+            'chat_id'    => $data['chat_id'],
+            'message_id' => $chat->last_message_id,
+            'text'       => $chat->last_message_text,
+        ])->successful();
     }
 
     private static function updateMessage(array $data): void
@@ -28,7 +40,7 @@ class Telegram
         $token = env('TELEGRAM_BOT_TOKEN');
         Http::post(self::URL . "/bot$token/editMessageText", [
             'chat_id'    => $data['chat_id'],
-            'message_id' => $chat->last_message_id,
+            'message_id' => 857,
             'text'       => $data['text'],
         ]);
 

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('password')->nullable();
             $table->string('stage', 63)->nullable()->index();
             $table->bigInteger('last_message_id')->unsigned()->nullable();
+            $table->string('last_message_text', 1023)->nullable();
             $table->dateTime('last_activity_at')->nullable();
         });
     }
