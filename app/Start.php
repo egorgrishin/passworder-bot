@@ -4,6 +4,7 @@ namespace App;
 
 use App\Commands\HelpCommand;
 use App\Commands\MenuCommand;
+use App\Commands\StartCommand;
 use App\Contracts\CommandInterface;
 use App\Enums\Stage;
 use App\Handlers\Create\SelectPasswordLen;
@@ -19,8 +20,9 @@ use App\Helpers\Chat;
 class Start
 {
     private const COMMANDS = [
-        '/menu' => MenuCommand::class,
-        '/help' => HelpCommand::class,
+        '/start' => StartCommand::class,
+        '/menu'  => MenuCommand::class,
+        '/help'  => HelpCommand::class,
     ];
 
     public function start(Request $request): void
