@@ -4,7 +4,6 @@ namespace App\Middleware;
 
 use App\Exceptions\AddingChatError;
 use App\Helpers\Chat;
-use App\Helpers\Telegram\Telegram;
 use App\Request;
 use Closure;
 use Illuminate\Support\Facades\DB;
@@ -18,9 +17,6 @@ class ChatAddedToDatabase
      */
     public function handle(Request $request, Closure $next): mixed
     {
-        if ($request->dto->data !== '/start') {
-            Telegram::deleteMessage($request->dto->chat_id, $request->dto->message_id);
-        }
         if (Chat::setInstance($request->dto->hash)) {
             return $next($request);
         }

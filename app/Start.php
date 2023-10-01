@@ -4,7 +4,6 @@ namespace App;
 
 use App\Commands\HelpCommand;
 use App\Commands\MenuCommand;
-use App\Commands\NewMessageCommand;
 use App\Commands\StartCommand;
 use App\Contracts\CommandInterface;
 use App\Enums\Stage;
@@ -24,7 +23,6 @@ class Start
         '/start'      => StartCommand::class,
         '/menu'       => MenuCommand::class,
         '/help'       => HelpCommand::class,
-        '/newmessage' => NewMessageCommand::class,
     ];
 
     public function start(Request $request): void
