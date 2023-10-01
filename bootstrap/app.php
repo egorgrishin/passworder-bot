@@ -74,6 +74,7 @@ $app->configure('hash');
 $app->middleware([
     \App\Middleware\ChatAddedToDatabase::class,
     \App\Middleware\PasswordDefined::class,
+    \App\Middleware\Test::class,
     \App\Middleware\SessionIsActive::class,
     \App\Middleware\SendMessageByStage::class,
 ]);
