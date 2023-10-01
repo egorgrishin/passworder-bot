@@ -10,7 +10,7 @@ use Closure;
 
 class Test
 {
-    public function run(Request $request, Closure $next): mixed
+    public function handle(Request $request, Closure $next): mixed
     {
         $chat = Chat::getInstance();
         if (in_array($chat->stage, $this->getConfidentialStages())) {
